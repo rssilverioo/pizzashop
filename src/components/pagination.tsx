@@ -11,12 +11,14 @@ export interface PaginationProps {
   pageIndex: number
   totalCount: number
   perPage: number
+  onPageChange: (pageIndex: number) => Promise<void> | void
 }
 
 export function Pagination({
   pageIndex,
   totalCount,
   perPage,
+  onPageChange,
 }: PaginationProps) {
   const pages = Math.ceil(totalCount / perPage) || 1
   return (
@@ -30,20 +32,40 @@ export function Pagination({
           Pagina {pageIndex + 1} de {pages}
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(0)}
+            variant="outline"
+            className="h-8 w-8 p-0"
+            disabled={pageIndex === 0}
+          >
             <ChevronsLeft className="h-4 w-4" />
             <span className="sr-only">Primeira Pagina</span>
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(pageIndex - 1)}
+            variant="outline"
+            className="h-8 w-8 p-0"
+            disabled={pageIndex === 0}
+          >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Pagina Anterior</span>
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(pageIndex + 1)}
+            variant="outline"
+            className="h-8 w-8 p-0"
+            disabled={pages <= pageIndex + 1}
+          >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Proxima Pagina</span>
           </Button>
 
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(pages - 1)}
+            variant="outline"
+            className="h-8 w-8 p-0"
+            disabled={pages <= pageIndex + 1}
+          >
             <ChevronsRight className="h-4 w-4" />
             <span className="sr-only">Ultima Pagina</span>
           </Button>
